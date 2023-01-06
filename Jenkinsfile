@@ -3,6 +3,9 @@ pipeline{
 	triggers {
   		pollSCM '* * * * *'
 	}
+	environment {
+	dockerhub=credentials('dockertoken')
+	}
 
 	stages{
 		stage ('Dockerfile'){
@@ -23,7 +26,7 @@ pipeline{
 		
 		stage('Publish image to Docker Hub') {
 			steps {
-     			   withDockerRegistry([ credentialsId: "dockertoken", url: "" ]) { 
+			sh 'echo $dockertoken_PSW | docker login -u $dockertoken_USR --password-stdin'
 			sh  'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
 				
 				}
