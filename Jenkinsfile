@@ -17,7 +17,7 @@ pipeline{
 		stage('Docker Build and Tag'){
 			
 			steps{
-			sh 'docker build -t ihtor/mvnsimple:${BUILD_NUMBER}'
+			sh 'docker build -t ihtor/mvnsimple:${BUILD_NUMBER} .'
 			}
 		}
 		
