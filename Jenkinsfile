@@ -21,11 +21,10 @@ pipeline{
 			}
 		}
 		
-		stage('Push image to Docker hub'){
-			steps{
-				withDockerRegistry([credentialsId: "dockertoken", url: "" ]){
-				
-					sh 'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
+		stage('Publish image to Docker Hub') {
+			steps {
+     			   withDockerRegistry([ credentialsId: "dockertoken", url: "" ]) { 
+			sh  'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
 				
 				}
 			
@@ -34,8 +33,8 @@ pipeline{
 		
 		stage('Login to private instance'){
 			steps{
-			sh 'ssh -i terrakey.pem 172.20.20.109'
-			sh 'docker run -d --name maven -p 8070:8080 ihtor/mvnsimple:${BUILD_NUMBER}'	
+			sh 'ssh -i /tmp/terrakey.pem 172.20.20.109'
+			sh 'docker run ihtor/mvnsimple:${BUILD_NUMBER}'	
 			
 			}
 		}
