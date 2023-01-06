@@ -29,7 +29,7 @@ pipeline{
 			sh 'echo $dockertoken_PSW | docker login -u $dockertoken_USR --password-stdin'
 			sh  'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
 				
-				}
+				
 			
 			}
 		}
