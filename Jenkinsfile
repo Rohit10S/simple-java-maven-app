@@ -16,7 +16,7 @@ pipeline{
 		stage('Build'){
 
 			steps{
-			sh './mvnw package'
+			sh '/opt/maven/bin/mvn package'
 			
 			}
 		}
