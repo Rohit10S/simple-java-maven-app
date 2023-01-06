@@ -39,6 +39,7 @@ pipeline{
 			steps{
 			sshagent(['sshtoken']) {
           		sh 'ssh -o StrictHostKeyChecking=no ec2-user@172.20.20.109'
+			sh 'docker run ihtor/mvnsimple:${BUILD_NUMBER}'
 			}
 			
 			}
