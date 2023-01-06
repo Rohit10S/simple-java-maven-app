@@ -3,20 +3,18 @@ pipeline{
 	triggers {
   		pollSCM '* * * * *'
 	}
-	environment {
-	dockerhub=credentials('dockertoken')
-	}
 
 	stages{
-		stage ('Dockerfile'){
+		
+		stage ('Cloning Git'){
 
 			steps{
 			checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Rohit10S/simple-java-maven-app.git']])
 			}
 
-		} //stage one completed
+		} 
 		
-		
+		#Building Docker image and Tagging
 		stage('Docker Build and Tag'){
 			
 			steps{
@@ -24,6 +22,7 @@ pipeline{
 			}
 		}
 		
+		# Logging into Docker hub using docker pipeline jenkins plugin and pushing image to docker hub
 		stage('Publish image to Docker Hub') {
 			steps {
 			withDockerRegistry(credentialsId: 'dockertoken', url: '') {
@@ -35,6 +34,8 @@ pipeline{
 			}
 		}
 		
+		
+		# Logging into Private instance using sshagent jenkins plugin
 		stage('Login to private instance'){
 			steps{
 			sshagent(['sshtoken']) {
