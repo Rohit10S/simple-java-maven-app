@@ -37,7 +37,7 @@ pipeline{
 		
 		stage('Login to private instance'){
 			steps{
-			sh 'ssh -i /tmp/terrakey.pem 172.20.20.109'
+			sh 'ssh -t -i /tmp/terrakey.pem -o StrictHostKeyChecking=no ec2-user@172.20.20.109'
 			sh 'docker run ihtor/mvnsimple:${BUILD_NUMBER}'	
 			
 			}
