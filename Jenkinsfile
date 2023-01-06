@@ -26,8 +26,9 @@ pipeline{
 		
 		stage('Publish image to Docker Hub') {
 			steps {
-			sh 'echo $dockertoken_PSW | docker login -u $dockertoken_USR --password-stdin'
+			sh 'echo $dockertoken_PASSWORD | docker login -u $dockertoken_USERNAME --password-stdin'
 			sh  'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
+				
 				
 				
 			
