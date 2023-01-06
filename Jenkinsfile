@@ -5,7 +5,7 @@ pipeline{
 	}
 
 	stages{
-		stage ('git'){
+		stage ('Dockerfile'){
 
 			steps{
 			checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Rohit10S/simple-java-maven-app.git']])
@@ -13,13 +13,36 @@ pipeline{
 
 		} //stage one completed
 		
-		stage('Build'){
-
+		
+		stage('Docker Build and Tag'){
+			
 			steps{
-			sh '/opt/maven/bin/mvn package'
+			sh 'docker build -t ihtor/mvnsimple:${BUILD_NUMBER}'
+			}
+		}
+		
+		stage('Push image to Docker hub'){
+			steps{
+				withDockerRegistry([credentialsId: "dockertoken", url: "" ]){
+				
+					sh 'docker push ihtor/mvnsimple:${BUILD_NUMBER}'
+				
+				}
 			
 			}
 		}
+		
+		stage('Login to private instance'){
+			steps{
+			sh 'ssh -i terrakey.pem 172.20.20.109'
+			sh 'docker run -d --name maven -p 8070:8080 ihtor/mvnsimple:${BUILD_NUMBER}'	
+			
+			}
+		}
+		
+		
+		
+		
 
 	}
 
